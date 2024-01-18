@@ -199,7 +199,7 @@ func = GPIO.gpio_function(pin)
 # GPIO.IN, GPIO.OUT, GPIO.SPI, GPIO.I2C, GPIO.HARD_PWM, GPIO.SERIAL, GPIO.UNKNOWN
 
 
-                #################################       PWM     #######################################
+                #################################       P W M     #######################################
 
 # To create a PWM instance:
 p = GPIO.PWM(channel, frequency)
