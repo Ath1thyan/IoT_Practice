@@ -16,7 +16,7 @@ try:
 	while i != 'q':
 
 		try:
-			d = input('set a duty cycle: ')
+			d = input('set brightness: ')
 
 			if(d == 'q'):
 				GPIO.cleanup()
