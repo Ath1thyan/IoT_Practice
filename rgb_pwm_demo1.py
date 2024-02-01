@@ -1,6 +1,4 @@
-# from ctypes.wintypes import RGB
 import RPi.GPIO as GPIO
-import time
 
 class RGBA():
     def __init__(self, r, g, b):
@@ -16,16 +14,19 @@ class RGBA():
         self.b.start(0)
         
 
-    def setColor(self, r, g, b):
-        r = 100 - (r / 255) * 100
-        g = 100 - (g / 255) * 100
-        b = 100 - (b / 255) * 100
+    def setColor(self):
+        for i in range(0, 255, 1):
+            r = 100 - (i / 255) * 100
+            self.r.ChangeDutyCycle(r)
 
-        self.r.ChangeDutyCycle(r)
-        self.g.ChangeDutyCycle(g)
-        self.b.ChangeDutyCycle(b)
+        for j in range(0, 255, 1):
+            g = 100 - (j / 255) * 100
+            self.g.ChangeDutyCycle(g)
+
+        for k in range(0, 255, 1):
+            b = 100 - (k / 255) * 100
+            self.b.ChangeDutyCycle(b)
 
 led = RGBA(12, 13, 19)
-led.setColor(0,0,255)
-time.sleep(3)
+led.setColor()
 GPIO.cleanup()
