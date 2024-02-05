@@ -1,6 +1,5 @@
 import RPi.GPIO as GPIO
 import time
-from threading import Thread
 
 GPIO.setmode(GPIO.BCM)
 channel = 27

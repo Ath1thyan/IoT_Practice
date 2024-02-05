@@ -3,6 +3,12 @@ import time
 from colour import Color
 from threading import Thread
 
+GPIO.setmode(GPIO.BCM)
+inputChannel = 27
+
+GPIO.setup(inputChannel, GPIO.IN)
+speed = 0.1
+
 class rgb_demo():
 
     def __init__(self, r, g, b):
@@ -27,7 +33,7 @@ class rgb_demo():
         r = 100 - (r / 255) * 100
         g = 100 - (g / 255) * 100
         b = 100 - (b / 255) * 100
-        print(r, g, b)
+        #print(r, g, b)
         self.r.ChangeDutyCycle(int(r))
         self.g.ChangeDutyCycle(int(g))
         self.b.ChangeDutyCycle(int(b))
@@ -39,7 +45,7 @@ class rgb_demo():
         g = abs(rgb[1] * 100 - 100)
         b = abs(rgb[2] * 100 - 100)
 
-        print(r, g, b)
+        #print(r, g, b)
 
         self.r.ChangeDutyCycle(int(r))
         self.g.ChangeDutyCycle(int(g))
@@ -47,28 +53,50 @@ class rgb_demo():
         
     
 
-class RGBTransitionThread(Thread):
-    def __init__(self, rgb, start, end, duration):
-        Thread.__init__(self)
-        self.rgb = rgb
-        self.duration = duration
-        self.start_t = start
-        self.end_t = end
-        self.stoprequest = False
+# class RGBTransitionThread(Thread):
+#     def __init__(self, rgb, start, end, duration):
+#         Thread.__init__(self)
+#         self.rgb = rgb
+#         self.duration = duration
+#         self.start_t = start
+#         self.end_t = end
+#         self.stoprequest = False
 
 
-obj = rgb_demo(12, 13, 19)
-# obj.setColor(255, 0, 0)
+def rgb_transition_thread(self, rgb, duration):
+    # start = time.time()
+    # while time.time() - start <  duration:
+        # self.setRGB(rgb)
+        # time.sleep(0.01)
+        
+        while True:
+            for i in Color("red").range_to(Color("blue"), 100):
+                obj.setRGB(i.rgb)
+                time.sleep(speed)
+            for i in Color("blue").range_to(Color("red"), 100):
+                obj.setRGB(i.rgb)
+                time.sleep(speed)
+
+
+t = Thread(target = rgb_transition_thread)
+t.start()
+
 try:
     while True:
-        for i in Color("red").range_to(Color("blue"), 100):
-            obj.setRGB(i.rgb)
+        if GPIO.input(inputChannel) == GPIO.HIGH:
+            # print("Button Pressed " + str(time.time()))
+            if stime is None:
+                stime = time.time()
+            else:
+                speed = time.time() - stime
+                print("Speed: " + str(speed))
+                stime = None
+                
             time.sleep(0.01)
-        for i in Color("blue").range_to(Color("red"), 100):
-            obj.setRGB(i.rgb)
-            time.sleep(0.01)
-
-    GPIO.cleanup()
 except KeyboardInterrupt:
     GPIO.cleanup()
     print("\nQuitting...")
+
+
+obj = rgb_demo(12, 13, 19)
+GPIO.cleanup()
