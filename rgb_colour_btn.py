@@ -92,7 +92,7 @@ try:
                 print("Speed: " + str(speed))
                 stime = None
                 
-            time.sleep(0.01)
+            time.sleep(0.1)
 except KeyboardInterrupt:
     GPIO.cleanup()
     print("\nQuitting...")
