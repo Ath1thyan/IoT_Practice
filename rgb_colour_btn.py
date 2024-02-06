@@ -80,6 +80,7 @@ def rgb_transition_thread(self, rgb, duration):
 
 t = Thread(target = rgb_transition_thread)
 t.start()
+stime = None
 
 try:
     while True:
@@ -90,7 +91,7 @@ try:
             else:
                 speed = time.time() - stime
                 print("Speed: " + str(speed))
-                stime = None
+                # stime = None
                 
             time.sleep(0.1)
 except KeyboardInterrupt:
